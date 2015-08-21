@@ -25,6 +25,7 @@ class ApiServer {
   String _discoveryApiKey;
 
   Converter<Object, dynamic> _jsonToBytes;
+  Map<String, PluginHandler> _plugins;
 
   final Map<String, ApiConfig> _apis = {};
 
@@ -170,6 +171,10 @@ class ApiServer {
       throw new NotFoundError('Discovery API \'$apiKey\' not found.');
     }
     return api.generateDiscoveryDocument(baseUrl, _apiPrefix);
+  }
+
+  registerPlugin(String name, PluginHandler plugin) {
+    ApiConfigMethodPlugin.plugins[name] = plugin;
   }
 }
 

@@ -4,6 +4,14 @@
 
 part of rpc.config;
 
-class ApiConfigMethodPlugin {
 
+class ApiConfigMethodPlugin {
+  static Map<String, PluginHandler> plugins = {};
+  String pluginName;
+  Map additionalParameters;
+
+  ApiConfigMethodPlugin(
+      this.pluginName,
+      this.additionalParameters
+      );
 }

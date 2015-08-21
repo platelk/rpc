@@ -143,5 +143,6 @@ class VoidMessage {}
 /// Use as annotation for using a registered plugin
 class ApiPlugin {
   final Map<String, dynamic> additionalParams;
-  const ApiPlugin(String name, {this.additionalParams});
+  final String name;
+  const ApiPlugin(this.name, {this.additionalParams});
 }

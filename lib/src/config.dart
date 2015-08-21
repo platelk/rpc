@@ -23,6 +23,12 @@ part 'config/method.dart';
 part 'config/property.dart';
 part 'config/resource.dart';
 part 'config/schema.dart';
+part 'config/plugin.dart';
+
+typedef void PluginHandler(ParsedHttpApiRequest request,
+                           List<dynamic> positionalParams,
+                           Map<Symbol, dynamic> namedParams,
+                           Map<String, dynamic> additionalParams);
 
 class ApiConfigError extends Error {
   final String message;

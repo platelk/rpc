@@ -13,6 +13,7 @@ class ApiConfigMethod {
   final String path;
   final String httpMethod;
   final String description;
+  final List<ApiConfigMethodPlugin> enablePlugins;
 
   final InstanceMirror _instance;
   final List<ApiParameter> _pathParams;
@@ -22,8 +23,8 @@ class ApiConfigMethod {
   final UriParser _parser;
 
   ApiConfigMethod(this.id, this._instance, this.symbol, this.name, this.path,
-                  this.httpMethod, this.description, this._pathParams,
-                  this._queryParams, this._requestSchema,
+                  this.httpMethod, this.description, this.enablePlugins,
+                  this._pathParams, this._queryParams, this._requestSchema,
                   this._responseSchema, this._parser);
 
   bool matches(ParsedHttpApiRequest request) {
@@ -207,6 +208,14 @@ class ApiConfigMethod {
     await request.body.drain();
     logRequest(request, null);
     logMethodInvocation(symbol, positionalParams, namedParams);
+
+    // Plugin managment
+    for (var plugin in this.enablePlugins) {
+      if (ApiConfigMethodPlugin.plugins[plugin.pluginName] != null) {
+        ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+      }
+    }
+
     return _instance.invoke(symbol, positionalParams, namedParams).reflectee;
   }
 
@@ -242,6 +251,14 @@ class ApiConfigMethod {
             'Failed to decode request with internal error: $error');
     }
     logMethodInvocation(symbol, positionalParams, namedParams);
+
+    // Plugin managment
+    for (var plugin in this.enablePlugins) {
+      if (ApiConfigMethodPlugin.plugins[plugin.pluginName] != null) {
+        ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+      }
+    }
+
     return _instance.invoke(symbol, positionalParams, namedParams).reflectee;
   }
 }

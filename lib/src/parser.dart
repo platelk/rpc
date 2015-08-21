@@ -81,6 +81,19 @@ class ApiParser {
     return annotations.first.reflectee;
   }
 
+  // Returns annotations of type 'apiType' if exists and valid.
+  // Otherwise returns null.
+  List<dynamic> _getMultipleMetadata(DeclarationMirror dm, Type apiType) {
+    var annotations =
+    dm.metadata.where((a) => a.reflectee.runtimeType == apiType).toList();
+    if (annotations.length == 0) {
+      return null;
+    }
+    var l = [];
+    annotations.forEach((e) => l.add(e.reflectee));
+    return l;
+  }
+
   void addError(String errorMessage) {
     // TODO: Make it configurable whether to throw or collect the errors.
     rpcLogger.severe('$_contextId: $errorMessage');
@@ -272,14 +285,29 @@ class ApiParser {
     // Parse method return type.
     var responseSchema = _parseMethodReturnType(mm);
 
+    var plugins = _parseMethodPlugin(mm);
+
     var methodConfig = new ApiConfigMethod(discoveryId, methodOwner,
         mm.simpleName, name, metadata.path, httpMethod, metadata.description,
-        pathParams, queryParams, requestSchema, responseSchema, parser);
+        plugins, pathParams, queryParams, requestSchema, responseSchema, parser);
 
     _setupApiMethod(methodConfig);
 
     _removeIdSegment();
     return methodConfig;
+  }
+
+  List<ApiConfigMethodPlugin> _parseMethodPlugin(MethodMirror mm) {
+    var l = [];
+    List<ApiPlugin> pluginsAnnotation = _getMultipleMetadata(mm, ApiPlugin);
+    print("Plugins ? ${pluginsAnnotation}");
+    if (pluginsAnnotation != null) {
+      for (ApiPlugin ap in pluginsAnnotation) {
+        ApiConfigMethodPlugin p = new ApiConfigMethodPlugin(ap.name, ap.additionalParams);
+        l.add(p);
+      }
+    }
+    return l;
   }
 
   // Parses a method's url path parameters and validates them against the
