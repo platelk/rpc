@@ -138,3 +138,10 @@ class ApiProperty {
 /// Special API Message to use when a method doesn't need a request or doesn't
 /// return a response.
 class VoidMessage {}
+
+
+/// Use as annotation for using a registered plugin
+class ApiPlugin {
+  final Map<String, dynamic> additionalParams;
+  const ApiPlugin(String name, {this.additionalParams});
+}
