@@ -212,7 +212,9 @@ class ApiConfigMethod {
     // Plugin managment
     for (var plugin in this.enablePlugins) {
       if (ApiConfigMethodPlugin.plugins[plugin.pluginName] != null) {
-        ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+        var res = await ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+        if (res != null)
+          return res;
       }
     }
 
@@ -255,7 +257,9 @@ class ApiConfigMethod {
     // Plugin managment
     for (var plugin in this.enablePlugins) {
       if (ApiConfigMethodPlugin.plugins[plugin.pluginName] != null) {
-        ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+        var res = await ApiConfigMethodPlugin.plugins[plugin.pluginName](request, positionalParams, namedParams, plugin.additionalParameters);
+        if (res != null)
+          return res;
       }
     }
 

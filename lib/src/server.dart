@@ -173,6 +173,7 @@ class ApiServer {
     return api.generateDiscoveryDocument(baseUrl, _apiPrefix);
   }
 
+  /// Register a Plugin with the specified name
   registerPlugin(String name, PluginHandler plugin) {
     ApiConfigMethodPlugin.plugins[name] = plugin;
   }
