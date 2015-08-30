@@ -300,7 +300,6 @@ class ApiParser {
   List<ApiConfigMethodPlugin> _parseMethodPlugin(MethodMirror mm) {
     var l = [];
     List<ApiPlugin> pluginsAnnotation = _getMultipleMetadata(mm, ApiPlugin);
-    print("Plugins ? ${pluginsAnnotation}");
     if (pluginsAnnotation != null) {
       for (ApiPlugin ap in pluginsAnnotation) {
         ApiConfigMethodPlugin p = new ApiConfigMethodPlugin(ap.name, ap.additionalParams);
