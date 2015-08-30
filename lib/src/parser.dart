@@ -302,7 +302,7 @@ class ApiParser {
     List<ApiPlugin> pluginsAnnotation = _getMultipleMetadata(mm, ApiPlugin);
     if (pluginsAnnotation != null) {
       for (ApiPlugin ap in pluginsAnnotation) {
-        ApiConfigMethodPlugin p = new ApiConfigMethodPlugin(ap.name, ap.additionalParams);
+        ApiConfigMethodPlugin p = new ApiConfigMethodPlugin(ap.plugin, ap.params);
         l.add(p);
       }
     }
