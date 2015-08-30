@@ -144,5 +144,5 @@ class VoidMessage {}
 class ApiPlugin {
   final Map<String, dynamic> additionalParams;
   final String name;
-  const ApiPlugin(this.name, {this.additionalParams});
+  const ApiPlugin(this.name, [this.additionalParams]);
 }
